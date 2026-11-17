@@ -44,6 +44,8 @@ class StudentsPage extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final isWide = constraints.maxWidth >= 700;
+            final isLandscape =
+                constraints.maxWidth > constraints.maxHeight;
 
             return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
               stream: collection.orderBy('fullName').snapshots(),
@@ -64,30 +66,31 @@ class StudentsPage extends StatelessWidget {
 
                 if (docs.isEmpty) {
                   return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.all(isLandscape ? 16 : 24),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            width: 100,
-                            height: 100,
+                            width: isLandscape ? 75 : 100,
+                            height: isLandscape ? 75 : 100,
                             decoration: BoxDecoration(
                               color: champagne,
                               borderRadius: BorderRadius.circular(28),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.people_outline_rounded,
                               color: deepTeal,
-                              size: 52,
+                              size: isLandscape ? 40 : 52,
                             ),
                           ),
-                          const SizedBox(height: 22),
-                          const Text(
+                          SizedBox(height: isLandscape ? 12 : 22),
+                          Text(
                             'No Student Records Yet',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               color: deepTeal,
-                              fontSize: 21,
+                              fontSize: isLandscape ? 19 : 21,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -106,26 +109,30 @@ class StudentsPage extends StatelessWidget {
                 return Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 1050),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                    child: ListView(
+                      padding: EdgeInsets.only(
+                        bottom: 100,
+                      ),
                       children: [
                         Padding(
                           padding: EdgeInsets.fromLTRB(
                             isWide ? 28 : 20,
-                            24,
+                            isLandscape ? 12 : 24,
                             isWide ? 28 : 20,
-                            18,
+                            isLandscape ? 12 : 18,
                           ),
                           child: Container(
-                            padding: const EdgeInsets.all(22),
+                            padding: EdgeInsets.all(
+                              isLandscape ? 16 : 22,
+                            ),
                             decoration: BoxDecoration(
                               color: deepTeal,
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: champagne),
                             ),
-                            child: const Row(
+                            child: Row(
                               children: [
-                                Expanded(
+                                const Expanded(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -159,16 +166,17 @@ class StudentsPage extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Icon(
                                   Icons.groups_rounded,
                                   color: champagne,
-                                  size: 42,
+                                  size: isLandscape ? 32 : 42,
                                 ),
                               ],
                             ),
                           ),
                         ),
+
                         Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: isWide ? 28 : 20,
@@ -199,138 +207,137 @@ class StudentsPage extends StatelessWidget {
                             ],
                           ),
                         ),
+
                         const SizedBox(height: 10),
-                        Expanded(
-                          child: ListView.builder(
-                            padding: EdgeInsets.fromLTRB(
-                              isWide ? 28 : 20,
-                              4,
-                              isWide ? 28 : 20,
-                              100,
+
+                        ...docs.map((doc) {
+                          final data = doc.data();
+
+                          final name =
+                              (data['fullName'] ?? '').toString().trim();
+
+                          final initial = name.isNotEmpty
+                              ? name.substring(0, 1).toUpperCase()
+                              : '?';
+
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isWide ? 28 : 20,
                             ),
-                            itemCount: docs.length,
-                            itemBuilder: (context, index) {
-                              final doc = docs[index];
-                              final data = doc.data();
-
-                              final name =
-                                  (data['fullName'] ?? '').toString().trim();
-
-                              final initial = name.isNotEmpty
-                                  ? name.substring(0, 1).toUpperCase()
-                                  : '?';
-
-                              return Card(
-                                color: cream,
-                                elevation: 2,
-                                margin: const EdgeInsets.only(bottom: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                  side: const BorderSide(color: champagne),
-                                ),
-                                clipBehavior: Clip.antiAlias,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => StudentDetailsPage(
-                                          studentRef: doc.reference,
+                            child: Card(
+                              color: cream,
+                              elevation: 2,
+                              margin: EdgeInsets.only(
+                                bottom: isLandscape ? 10 : 14,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                side: const BorderSide(color: champagne),
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => StudentDetailsPage(
+                                        studentRef: doc.reference,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(
+                                    isLandscape ? 12 : 15,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: isLandscape ? 46 : 52,
+                                        height: isLandscape ? 46 : 52,
+                                        decoration: BoxDecoration(
+                                          color: champagne,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          initial,
+                                          style: const TextStyle(
+                                            color: deepTeal,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 52,
-                                          height: 52,
-                                          decoration: BoxDecoration(
-                                            color: champagne,
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            initial,
-                                            style: const TextStyle(
-                                              color: deepTeal,
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold,
+                                      const SizedBox(width: 14),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              name.isEmpty
+                                                  ? 'Unnamed Student'
+                                                  : name,
+                                              style: const TextStyle(
+                                                color: deepTeal,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 14),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                name.isEmpty
-                                                    ? 'Unnamed Student'
-                                                    : name,
-                                                style: const TextStyle(
-                                                  color: deepTeal,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              'Student No: ${data['studentNumber'] ?? ''}',
+                                              style: const TextStyle(
+                                                color: deepTeal,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Wrap(
+                                              spacing: 6,
+                                              runSpacing: 6,
+                                              children: [
+                                                _InfoChip(
+                                                  text:
+                                                      '${data['course'] ?? ''}',
                                                 ),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                'Student No: ${data['studentNumber'] ?? ''}',
-                                                style: const TextStyle(
-                                                  color: deepTeal,
-                                                  fontSize: 12,
+                                                _InfoChip(
+                                                  text:
+                                                      '${data['yearLevel'] ?? ''}',
                                                 ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Wrap(
-                                                spacing: 6,
-                                                runSpacing: 6,
-                                                children: [
-                                                  _InfoChip(
-                                                    text:
-                                                        '${data['course'] ?? ''}',
-                                                  ),
-                                                  _InfoChip(
-                                                    text:
-                                                        '${data['yearLevel'] ?? ''}',
-                                                  ),
-                                                  _InfoChip(
-                                                    text:
-                                                        '${data['section'] ?? 'Not specified'}',
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 7),
-                                              Text(
-                                                '${data['email'] ?? ''}',
-                                                style: const TextStyle(
-                                                  color: deepTeal,
-                                                  fontSize: 12,
+                                                _InfoChip(
+                                                  text:
+                                                      '${data['section'] ?? 'Not specified'}',
                                                 ),
-                                                softWrap: true,
+                                              ],
+                                            ),
+                                            const SizedBox(height: 7),
+                                            Text(
+                                              '${data['email'] ?? ''}',
+                                              style: const TextStyle(
+                                                color: deepTeal,
+                                                fontSize: 12,
                                               ),
-                                            ],
-                                          ),
+                                              softWrap: true,
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(width: 5),
-                                        const Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          color: champagne,
-                                          size: 18,
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      const Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: champagne,
+                                        size: 18,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              );
-                            },
-                          ),
-                        ),
+                              ),
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),
@@ -782,3 +789,4 @@ class _InfoChip extends StatelessWidget {
     );
   }
 }
+
