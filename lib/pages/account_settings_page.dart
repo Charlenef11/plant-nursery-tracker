@@ -18,6 +18,8 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
   final _newPassword = TextEditingController();
 
   bool _loading = false;
+
+  // Passwords are hidden by default.
   bool _showCurrentPassword = false;
   bool _showNewPassword = false;
 
@@ -174,7 +176,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Account information
+                      // Account Information
                       Container(
                         padding: EdgeInsets.all(isWide ? 30 : 22),
                         decoration: BoxDecoration(
@@ -251,7 +253,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
 
                       const SizedBox(height: 28),
 
-                      // Change password section
+                      // Change Password
                       Card(
                         color: cream,
                         elevation: 3,
@@ -316,8 +318,8 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                                     },
                                     icon: Icon(
                                       _showCurrentPassword
-                                          ? Icons.visibility_off_outlined
-                                          : Icons.visibility_outlined,
+                                          ? Icons.visibility_outlined
+                                          : Icons.visibility_off_outlined,
                                       color: deepTeal,
                                     ),
                                   ),
@@ -367,8 +369,8 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                                     },
                                     icon: Icon(
                                       _showNewPassword
-                                          ? Icons.visibility_off_outlined
-                                          : Icons.visibility_outlined,
+                                          ? Icons.visibility_outlined
+                                          : Icons.visibility_off_outlined,
                                       color: deepTeal,
                                     ),
                                   ),
@@ -440,7 +442,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
 
                       const SizedBox(height: 24),
 
-                      // Logout section
+                      // Logout
                       OutlinedButton.icon(
                         onPressed: _loading
                             ? null
@@ -490,4 +492,5 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     );
   }
 }
+
 
