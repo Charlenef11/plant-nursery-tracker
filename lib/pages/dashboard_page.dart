@@ -1,13 +1,19 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'account_settings_page.dart';
-import 'students_page.dart';
+import 'plant_collection_page.dart';
 
-const deepTeal = Color(0xFF164E52);
-const champagne = Color(0xFFC9A875);
-const cream = Color(0xFFF5F2E9);
+const _forest = Color(0xFF285943);
+const _sage = Color(0xFF91A98A);
+const _lightSage = Color(0xFFE5EDE2);
+const _ivory = Color(0xFFF6F4EA);
+const _gold = Color(0xFFC5A66A);
+const _textDark = Color(0xFF263C30);
+const _muted = Color(0xFF7C887C);
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -29,11 +35,12 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     final pages = [
       _DashboardHome(onNavigate: _navigateToTab),
-      const StudentsPage(),
+      const PlantCollectionPage(),
       const AccountSettingsPage(),
     ];
 
     return Scaffold(
+      backgroundColor: _ivory,
       body: IndexedStack(
         index: _selectedIndex,
         children: pages,
@@ -41,23 +48,24 @@ class _DashboardPageState extends State<DashboardPage> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _navigateToTab,
-        backgroundColor: cream,
-        indicatorColor: champagne.withValues(alpha: 0.35),
-        elevation: 8,
+        backgroundColor: Colors.white,
+        indicatorColor: _lightSage,
+        elevation: 3,
+        height: 70,
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
+            selectedIcon: Icon(Icons.home_rounded, color: _forest),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.people_outline_rounded),
-            selectedIcon: Icon(Icons.people_rounded),
-            label: 'Students',
+            icon: Icon(Icons.local_florist_outlined),
+            selectedIcon: Icon(Icons.local_florist, color: _forest),
+            label: 'My Plants',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded),
+            selectedIcon: Icon(Icons.person_rounded, color: _forest),
             label: 'Account',
           ),
         ],
@@ -69,313 +77,525 @@ class _DashboardPageState extends State<DashboardPage> {
 class _DashboardHome extends StatelessWidget {
   final ValueChanged<int> onNavigate;
 
-  const _DashboardHome({
-    required this.onNavigate,
-  });
+  const _DashboardHome({required this.onNavigate});
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
+    final user = FirebaseAuth.instance.currentUser;
 
-    final students = FirebaseFirestore.instance
+    if (user == null) {
+      return const Center(child: Text('Please log in again.'));
+    }
+
+    final plants = FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .collection('students');
+        .collection('plants');
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Dashboard',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isWide = constraints.maxWidth >= 700;
+    final displayName = user.email?.split('@').first ?? 'Plant Lover';
 
-            return SingleChildScrollView(
-              padding: EdgeInsets.all(isWide ? 32 : 20),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1050),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(isWide ? 32 : 24),
-                        decoration: BoxDecoration(
-                          color: deepTeal,
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(
-                            color: champagne,
-                            width: 1.5,
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth >= 750;
+
+          return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: isWide ? 36 : 20,
+              vertical: 22,
+            ),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1050),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // TOP HEADER
+                    Row(
+                      children: [
+                        Container(
+                          height: 43,
+                          width: 43,
+                          decoration: BoxDecoration(
+                            color: _lightSage,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: const Icon(
+                            Icons.spa_rounded,
+                            color: _forest,
+                            size: 25,
                           ),
                         ),
-                        child: Row(
+                        const SizedBox(width: 11),
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'STUDENT INFORMATION SYSTEM',
-                                    style: TextStyle(
-                                      color: champagne,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.2,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Text(
-                                    'Welcome, ${user.email ?? 'User'}!',
-                                    style: TextStyle(
-                                      color: cream,
-                                      fontSize: isWide ? 28 : 22,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  const Text(
-                                    'Manage your student records in one place.',
-                                    style: TextStyle(
-                                      color: cream,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              'plant nursery',
+                              style: TextStyle(
+                                color: _forest,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: -0.5,
                               ),
                             ),
-                            if (isWide) ...[
-                              const SizedBox(width: 16),
+                            Text(
+                              'BOTANICAL CARE TRACKER',
+                              style: TextStyle(
+                                color: _muted,
+                                fontSize: 8,
+                                letterSpacing: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () => onNavigate(2),
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: _forest,
+                          ),
+                          icon: const Icon(Icons.person_outline_rounded),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 27),
+
+                    // WELCOME SECTION
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(23),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFDCE8D8),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            right: -5,
+                            bottom: -12,
+                            child: Icon(
+                              Icons.eco_rounded,
+                              size: isWide ? 155 : 120,
+                              color: _forest.withValues(alpha: 0.09),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Container(
-                                width: 76,
-                                height: 76,
-                                decoration: BoxDecoration(
-                                  color: champagne,
-                                  borderRadius: BorderRadius.circular(22),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 11,
+                                  vertical: 6,
                                 ),
-                                child: const Icon(
-                                  Icons.school_rounded,
-                                  color: deepTeal,
-                                  size: 42,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.65),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: const Text(
+                                  '✦  YOUR BOTANICAL SPACE',
+                                  style: TextStyle(
+                                    color: _forest,
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'Hello, $displayName!',
+                                style: TextStyle(
+                                  color: _forest,
+                                  fontSize: isWide ? 31 : 26,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: -0.8,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              const SizedBox(
+                                width: 260,
+                                child: Text(
+                                  'A little care goes a long way. Keep your plants healthy and your garden growing.',
+                                  style: TextStyle(
+                                    color: Color(0xFF526D57),
+                                    fontSize: 12,
+                                    height: 1.6,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              FilledButton(
+                                onPressed: () => onNavigate(1),
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: _forest,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 18,
+                                    vertical: 13,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Explore my garden',
+                                      style: TextStyle(fontSize: 11),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Icon(Icons.arrow_forward_rounded, size: 15),
+                                  ],
                                 ),
                               ),
                             ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 28),
+
+                    // GARDEN OVERVIEW
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Garden Overview',
+                              style: TextStyle(
+                                color: _textDark,
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Your little garden at a glance',
+                              style: TextStyle(
+                                color: _muted,
+                                fontSize: 11,
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 28),
-                      const Text(
-                        'Overview',
-                        style: TextStyle(
-                          color: deepTeal,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                        Icon(
+                          Icons.analytics_outlined,
+                          color: _sage,
+                          size: 23,
                         ),
-                      ),
-                      const SizedBox(height: 14),
-                      StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                        stream: students.snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return const Card(
-                              child: Padding(
-                                padding: EdgeInsets.all(20),
-                                child: Text(
-                                  'Unable to load student count.',
-                                  style: TextStyle(color: deepTeal),
-                                ),
-                              ),
-                            );
-                          }
+                      ],
+                    ),
 
-                          if (!snapshot.hasData) {
-                            return const Card(
-                              child: Padding(
-                                padding: EdgeInsets.all(24),
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: deepTeal,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
+                    const SizedBox(height: 16),
 
-                          return Card(
-                            color: cream,
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side: const BorderSide(color: champagne),
-                            ),
+                    StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: plants.snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text(
+                            'Unable to load plant statistics.',
+                            style: TextStyle(color: Colors.red),
+                          );
+                        }
+
+                        if (!snapshot.hasData) {
+                          return const Center(
                             child: Padding(
-                              padding: const EdgeInsets.all(24),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 58,
-                                    height: 58,
-                                    decoration: BoxDecoration(
-                                      color: champagne,
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: const Icon(
-                                      Icons.groups_rounded,
-                                      color: deepTeal,
-                                      size: 32,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 18),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Total Students',
-                                          style: TextStyle(
-                                            color: deepTeal,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          '${snapshot.data!.docs.length}',
-                                          style: const TextStyle(
-                                            color: deepTeal,
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const Icon(
-                                    Icons.school_outlined,
-                                    color: champagne,
-                                    size: 32,
-                                  ),
-                                ],
+                              padding: EdgeInsets.all(22),
+                              child: CircularProgressIndicator(
+                                color: _forest,
                               ),
                             ),
                           );
-                        },
-                      ),
-                      const SizedBox(height: 28),
-                      const Text(
-                        'Quick Actions',
-                        style: TextStyle(
-                          color: deepTeal,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      if (isWide)
-                        Row(
+                        }
+
+                        final docs = snapshot.data!.docs;
+                        final totalRecords = docs.length;
+
+                        final totalQuantity = docs.fold<int>(
+                          0,
+                          (sum, doc) {
+                            final quantity = doc.data()['quantity'];
+                            return sum +
+                                (quantity is num ? quantity.toInt() : 0);
+                          },
+                        );
+
+                        final categories = docs
+                            .map((doc) => doc.data()['category'])
+                            .whereType<String>()
+                            .where((category) => category.isNotEmpty)
+                            .toSet()
+                            .length;
+
+                        return GridView.count(
+                          crossAxisCount: isWide ? 3 : 2,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: isWide ? 2.1 : 1.5,
                           children: [
-                            Expanded(
-                              child: _ActionCard(
-                                title: 'Manage Students',
-                                description:
-                                    'View, add, edit, and delete student records.',
-                                icon: Icons.people_alt_rounded,
-                                onTap: () => onNavigate(1),
-                              ),
+                            _OverviewCard(
+                              title: 'Plant Records',
+                              value: '$totalRecords',
+                              subtitle: 'Registered plants',
+                              icon: Icons.local_florist_rounded,
+                              accent: _lightSage,
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: _ActionCard(
-                                title: 'Account Settings',
-                                description:
-                                    'Manage your account and password.',
-                                icon: Icons.settings_rounded,
-                                onTap: () => onNavigate(2),
-                              ),
+                            _OverviewCard(
+                              title: 'Total Quantity',
+                              value: '$totalQuantity',
+                              subtitle: 'Plants in stock',
+                              icon: Icons.yard_rounded,
+                              accent: const Color(0xFFF0E9D9),
+                            ),
+                            _OverviewCard(
+                              title: 'Plant Types',
+                              value: '$categories',
+                              subtitle: 'Different categories',
+                              icon: Icons.category_outlined,
+                              accent: const Color(0xFFE8E9E1),
                             ),
                           ],
-                        )
-                      else
-                        Column(
-                          children: [
-                            _ActionCard(
-                              title: 'Manage Students',
-                              description:
-                                  'View, add, edit, and delete student records.',
-                              icon: Icons.people_alt_rounded,
-                              onTap: () => onNavigate(1),
-                            ),
-                            const SizedBox(height: 14),
-                            _ActionCard(
-                              title: 'Account Settings',
-                              description:
-                                  'Manage your account and password.',
-                              icon: Icons.settings_rounded,
-                              onTap: () => onNavigate(2),
-                            ),
-                          ],
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 29),
+
+                    // QUICK ACCESS
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Explore',
+                          style: TextStyle(
+                            color: _textDark,
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                    ],
-                  ),
+                        TextButton(
+                          onPressed: () => onNavigate(1),
+                          child: const Text(
+                            'View all',
+                            style: TextStyle(
+                              color: _forest,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    _ExploreTile(
+                      icon: Icons.eco_outlined,
+                      title: 'My Plant Collection',
+                      subtitle: 'View and manage your plants',
+                      color: _lightSage,
+                      onTap: () => onNavigate(1),
+                    ),
+
+                    const SizedBox(height: 11),
+
+                    _ExploreTile(
+                      icon: Icons.water_drop_outlined,
+                      title: 'Plant Care',
+                      subtitle: 'Check your plant care information',
+                      color: const Color(0xFFF0E9D9),
+                      onTap: () => onNavigate(1),
+                    ),
+
+                    const SizedBox(height: 11),
+
+                    _ExploreTile(
+                      icon: Icons.person_outline_rounded,
+                      title: 'Account Settings',
+                      subtitle: 'Manage your account preferences',
+                      color: const Color(0xFFE8E9E1),
+                      onTap: () => onNavigate(2),
+                    ),
+
+                    const SizedBox(height: 28),
+
+                    // FOOTER
+                    Center(
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.spa_outlined,
+                            color: _sage,
+                            size: 23,
+                          ),
+                          const SizedBox(height: 7),
+                          Text(
+                            'GROW WITH NATURE  •  BLOOM WITH CARE',
+                            style: TextStyle(
+                              color: _forest.withValues(alpha: 0.7),
+                              fontSize: 9,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+                  ],
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-class _ActionCard extends StatelessWidget {
+// OVERVIEW CARD
+class _OverviewCard extends StatelessWidget {
   final String title;
-  final String description;
+  final String value;
+  final String subtitle;
   final IconData icon;
+  final Color accent;
+
+  const _OverviewCard({
+    required this.title,
+    required this.value,
+    required this.subtitle,
+    required this.icon,
+    required this.accent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(19),
+        border: Border.all(color: const Color(0xFFEAECE5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Container(
+                height: 34,
+                width: 34,
+                decoration: BoxDecoration(
+                  color: accent,
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                child: Icon(
+                  icon,
+                  color: _forest,
+                  size: 18,
+                ),
+              ),
+              const Spacer(),
+              const Icon(
+                Icons.north_east_rounded,
+                color: _muted,
+                size: 14,
+              ),
+            ],
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              color: _forest,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  color: _textDark,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 11,
+                ),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  color: _muted,
+                  fontSize: 9,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// EXPLORE TILE
+class _ExploreTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
   final VoidCallback onTap;
 
-  const _ActionCard({
-    required this.title,
-    required this.description,
+  const _ExploreTile({
     required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.color,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: cream,
-      elevation: 2,
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(color: champagne),
-      ),
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(17),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(17),
         child: Padding(
-          padding: const EdgeInsets.all(22),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 15,
+            vertical: 14,
+          ),
           child: Row(
             children: [
               Container(
-                width: 54,
-                height: 54,
+                width: 43,
+                height: 43,
                 decoration: BoxDecoration(
-                  color: champagne,
-                  borderRadius: BorderRadius.circular(16),
+                  color: color,
+                  borderRadius: BorderRadius.circular(13),
                 ),
                 child: Icon(
                   icon,
-                  color: deepTeal,
-                  size: 29,
+                  color: _forest,
+                  size: 22,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 13),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -383,17 +603,17 @@ class _ActionCard extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        color: deepTeal,
-                        fontSize: 16,
+                        color: _textDark,
                         fontWeight: FontWeight.bold,
+                        fontSize: 12,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 4),
                     Text(
-                      description,
+                      subtitle,
                       style: const TextStyle(
-                        color: deepTeal,
-                        fontSize: 12,
+                        color: _muted,
+                        fontSize: 10,
                       ),
                     ),
                   ],
@@ -401,8 +621,8 @@ class _ActionCard extends StatelessWidget {
               ),
               const Icon(
                 Icons.arrow_forward_ios_rounded,
-                color: champagne,
-                size: 18,
+                color: _sage,
+                size: 15,
               ),
             ],
           ),
@@ -411,4 +631,3 @@ class _ActionCard extends StatelessWidget {
     );
   }
 }
-

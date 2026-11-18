@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "485768416718",
-    "project_id": "student-information-app-11ddf",
-    "storage_bucket": "student-information-app-11ddf.firebasestorage.app"
+    "project_number": "231070048683",
+    "project_id": "plant-nursery-tracker",
+    "storage_bucket": "plant-nursery-tracker.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:485768416718:android:aad21d1e58776180616f9f",
+        "mobilesdk_app_id": "1:231070048683:android:843735f63caac0827472ee",
         "android_client_info": {
           "package_name": "com.example.student_information_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAP1aHnlhfuvx-MOr6OWS88R_FvaDoBEas"
+          "current_key": "AIzaSyCL2yHiupEI5Ffmv2j3rA0e6qAz8tVjuqw"
         }
       ],
       "services": {

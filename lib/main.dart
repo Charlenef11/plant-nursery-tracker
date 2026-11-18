@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,11 @@ import 'firebase_options.dart';
 import 'pages/dashboard_page.dart';
 import 'pages/login_page.dart';
 
+const forestGreen = Color(0xFF285943);
+const sageGreen = Color(0xFF91A98A);
+const botanicalCream = Color(0xFFF6F4EA);
+const leafGold = Color(0xFFC5A66A);
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -13,39 +19,35 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const StudentInformationApp());
+  runApp(const PlantNurseryApp());
 }
 
-class StudentInformationApp extends StatelessWidget {
-  const StudentInformationApp({super.key});
+class PlantNurseryApp extends StatelessWidget {
+  const PlantNurseryApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const deepTeal = Color(0xFF164E52);
-    const champagne = Color(0xFFC9A875);
-    const cream = Color(0xFFF5F2E9);
-
     return MaterialApp(
-      title: 'Student Information App',
+      title: 'Plant Nursery',
       debugShowCheckedModeBanner: false,
 
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: 'Roboto',
-        scaffoldBackgroundColor: cream,
+        scaffoldBackgroundColor: botanicalCream,
 
         colorScheme: const ColorScheme.light(
-          primary: deepTeal,
-          onPrimary: cream,
-          secondary: champagne,
-          onSecondary: deepTeal,
-          surface: cream,
-          onSurface: deepTeal,
+          primary: forestGreen,
+          onPrimary: Colors.white,
+          secondary: sageGreen,
+          onSecondary: forestGreen,
+          surface: botanicalCream,
+          onSurface: forestGreen,
         ),
 
         appBarTheme: const AppBarTheme(
-          backgroundColor: deepTeal,
-          foregroundColor: cream,
+          backgroundColor: forestGreen,
+          foregroundColor: Colors.white,
           elevation: 0,
           centerTitle: false,
         ),
@@ -56,27 +58,30 @@ class StudentInformationApp extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
-            side: const BorderSide(color: champagne),
+            side: const BorderSide(color: sageGreen),
           ),
         ),
 
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: Colors.white,
-          labelStyle: const TextStyle(color: deepTeal),
-          prefixIconColor: champagne,
+          labelStyle: const TextStyle(color: forestGreen),
+          prefixIconColor: sageGreen,
+
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: champagne),
+            borderSide: const BorderSide(color: sageGreen),
           ),
+
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: champagne),
+            borderSide: const BorderSide(color: sageGreen),
           ),
+
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide: const BorderSide(
-              color: deepTeal,
+              color: forestGreen,
               width: 2,
             ),
           ),
@@ -84,8 +89,8 @@ class StudentInformationApp extends StatelessWidget {
 
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
-            backgroundColor: deepTeal,
-            foregroundColor: cream,
+            backgroundColor: forestGreen,
+            foregroundColor: Colors.white,
             minimumSize: const Size(0, 50),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
@@ -95,8 +100,8 @@ class StudentInformationApp extends StatelessWidget {
 
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            foregroundColor: deepTeal,
-            side: const BorderSide(color: champagne),
+            foregroundColor: forestGreen,
+            side: const BorderSide(color: sageGreen),
             minimumSize: const Size(0, 50),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
@@ -106,8 +111,8 @@ class StudentInformationApp extends StatelessWidget {
 
         floatingActionButtonTheme:
             const FloatingActionButtonThemeData(
-          backgroundColor: deepTeal,
-          foregroundColor: cream,
+          backgroundColor: forestGreen,
+          foregroundColor: Colors.white,
         ),
       ),
 
@@ -130,7 +135,7 @@ class _AppSplashGateState extends State<AppSplashGate> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         setState(() {
           _showSplash = false;
@@ -141,83 +146,64 @@ class _AppSplashGateState extends State<AppSplashGate> {
 
   @override
   Widget build(BuildContext context) {
-    const deepTeal = Color(0xFF164E52);
-    const champagne = Color(0xFFC9A875);
-    const cream = Color(0xFFF5F2E9);
-
     if (_showSplash) {
       return Scaffold(
-        backgroundColor: cream,
+        backgroundColor: botanicalCream,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 160,
-                height: 160,
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(32),
-                  border: Border.all(
-                    color: champagne,
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: deepTeal.withValues(alpha: 0.12),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Image.asset(
-                  'assets/app_logo.png',
-                  fit: BoxFit.contain,
-                ),
+              Image.asset(
+                'assets/app_logo.png',
+                width: 125,
+                height: 125,
+                fit: BoxFit.contain,
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(height: 24),
 
               const Text(
-                'Student Information App',
-                textAlign: TextAlign.center,
+                'Plant Nursery',
                 style: TextStyle(
-                  color: deepTeal,
-                  fontSize: 22,
+                  color: forestGreen,
+                  fontSize: 27,
                   fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
 
               const Text(
-                'Manage student records with ease',
-                textAlign: TextAlign.center,
+                'BOTANICAL CARE TRACKER',
                 style: TextStyle(
-                  color: deepTeal,
-                  fontSize: 13,
+                  color: sageGreen,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 2,
                 ),
               ),
 
               const SizedBox(height: 35),
 
               const SizedBox(
-                width: 130,
-                child: LinearProgressIndicator(
-                  backgroundColor: champagne,
-                  color: deepTeal,
-                  minHeight: 4,
+                width: 28,
+                height: 28,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  color: forestGreen,
+                  backgroundColor: sageGreen,
                 ),
               ),
 
-              const SizedBox(height: 14),
+              const SizedBox(height: 12),
 
               const Text(
-                'Loading...',
+                'GROW WITH NATURE',
                 style: TextStyle(
-                  color: deepTeal,
-                  fontSize: 12,
+                  color: forestGreen,
+                  fontSize: 10,
+                  letterSpacing: 1.5,
                 ),
               ),
             ],
@@ -231,10 +217,10 @@ class _AppSplashGateState extends State<AppSplashGate> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-            backgroundColor: cream,
+            backgroundColor: botanicalCream,
             body: Center(
               child: CircularProgressIndicator(
-                color: deepTeal,
+                color: forestGreen,
               ),
             ),
           );

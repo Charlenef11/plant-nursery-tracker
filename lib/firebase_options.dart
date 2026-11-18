@@ -41,46 +41,44 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBHE8bRdcYznh7N0sMCE3ukaheBLQ_6HdQ',
-    appId: '1:485768416718:web:de8d96e8ee612230616f9f',
-    messagingSenderId: '485768416718',
-    projectId: 'student-information-app-11ddf',
-    authDomain: 'student-information-app-11ddf.firebaseapp.com',
-    storageBucket: 'student-information-app-11ddf.firebasestorage.app',
+    apiKey: 'AIzaSyAOcW3o4DLFZ57AcByL1v19d4FT4uI9q3E',
+    appId: '1:231070048683:web:939efd658f9d48367472ee',
+    messagingSenderId: '231070048683',
+    projectId: 'plant-nursery-tracker',
+    authDomain: 'plant-nursery-tracker.firebaseapp.com',
+    storageBucket: 'plant-nursery-tracker.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAP1aHnlhfuvx-MOr6OWS88R_FvaDoBEas',
-    appId: '1:485768416718:android:aad21d1e58776180616f9f',
-    messagingSenderId: '485768416718',
-    projectId: 'student-information-app-11ddf',
-    storageBucket: 'student-information-app-11ddf.firebasestorage.app',
+    apiKey: 'AIzaSyCL2yHiupEI5Ffmv2j3rA0e6qAz8tVjuqw',
+    appId: '1:231070048683:android:843735f63caac0827472ee',
+    messagingSenderId: '231070048683',
+    projectId: 'plant-nursery-tracker',
+    storageBucket: 'plant-nursery-tracker.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAHGjiGnLTcUSs64AYsFlrPz6KsJuotHHg',
-    appId: '1:485768416718:ios:b84cd0d497a14fdf616f9f',
-    messagingSenderId: '485768416718',
-    projectId: 'student-information-app-11ddf',
-    storageBucket: 'student-information-app-11ddf.firebasestorage.app',
+    apiKey: 'AIzaSyCL9T-DUefHNq8sfSr-oWwor-qBh-zHLx0',
+    appId: '1:231070048683:ios:cb170530594a6d527472ee',
+    messagingSenderId: '231070048683',
+    projectId: 'plant-nursery-tracker',
+    storageBucket: 'plant-nursery-tracker.firebasestorage.app',
     iosBundleId: 'com.example.studentInformationApp',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAHGjiGnLTcUSs64AYsFlrPz6KsJuotHHg',
-    appId: '1:485768416718:ios:b84cd0d497a14fdf616f9f',
-    messagingSenderId: '485768416718',
-    projectId: 'student-information-app-11ddf',
-    storageBucket: 'student-information-app-11ddf.firebasestorage.app',
+    apiKey: 'AIzaSyCL9T-DUefHNq8sfSr-oWwor-qBh-zHLx0',
+    appId: '1:231070048683:ios:cb170530594a6d527472ee',
+    messagingSenderId: '231070048683',
+    projectId: 'plant-nursery-tracker',
+    storageBucket: 'plant-nursery-tracker.firebasestorage.app',
     iosBundleId: 'com.example.studentInformationApp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBHE8bRdcYznh7N0sMCE3ukaheBLQ_6HdQ',
-    appId: '1:485768416718:web:1b699a09c43c87f2616f9f',
-    messagingSenderId: '485768416718',
-    projectId: 'student-information-app-11ddf',
-    authDomain: 'student-information-app-11ddf.firebaseapp.com',
-    storageBucket: 'student-information-app-11ddf.firebasestorage.app',
+    apiKey: 'AIzaSyAOcW3o4DLFZ57AcByL1v19d4FT4uI9q3E',
+    appId: '1:231070048683:web:091d016d59aba9067472ee',
+    messagingSenderId: '231070048683',
+    projectId: 'plant-nursery-tracker',
+    authDomain: 'plant-nursery-tracker.firebaseapp.com',
+    storageBucket: 'plant-nursery-tracker.firebasestorage.app',
   );
 }
